@@ -11,5 +11,3 @@ AWS Cloud Security - Protect your data with cloud-powered security [read more he
 
 Best Practices for Building Enterprise Grade APIs with Amazon API Gateway - [AWS Online Tech Talks](https://www.youtube.com/watch?v=9ElpSPXk-g8).
 
-### Presentation slides for the workshop at re:Inforce 2019
-[https://www.slideshare.net/AmazonWebServices/developing-your-first-serverless-web-application-on-aws-srv202-aws-reinvent-2018](https://www.slideshare.net/AmazonWebServices/developing-your-first-serverless-web-application-on-aws-srv202-aws-reinvent-2018)
