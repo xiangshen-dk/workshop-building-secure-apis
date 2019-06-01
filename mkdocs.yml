@@ -1,0 +1,47 @@
+site_name: Building Secure APIs in the Cloud
+nav:
+  - Module 1 - Setup the project: module-1.md
+  - Module 2 - Resource policy: module-7.md
+  - Module 3 - Private integrations: vpclink.md
+  - Module 4 - Input validation: input-validation.md
+  - Module 5 - WAF: waf.md
+  - Module 6 - Usage plan: usage-plan.md
+  - Module 7 - Authentication: module-2.md
+  - Module 8 - Configure the web UI: module-3.md
+  - Module 9 - X-Ray: xray.md
+  - Module 10 - Host the static files: module-4.md
+  - Module 11 - Conclusions: module-6.md
+  - Module 12 - Cleanup: module-8.md  
+theme:
+  name: 'material'
+  palette:
+    primary: 'indigo'
+    accent: 'indigo'
+  font:
+     text: 'Roboto'
+     code: 'Consolas'
+  feature:
+    tabs: true
+# Customizations
+markdown_extensions:
+  - admonition
+  - codehilite   
+  - attr_list
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - toc:
+      permalink: true
