@@ -109,12 +109,13 @@ Use curl, you can try making requests to the **POST /feedback** API using invali
 ### Wrong parameters = Invalid request:
 
 Here are some example request bodies that fail:
+!!! danger "Please replace the BASE_URL value with your invoke URL from the deployed stage."
 
 * Missing fields:
 
-```bash
-curl -X POST \
-https://wcl387700f.execute-api.us-east-2.amazonaws.com/prod/feedback \
+```bash hl_lines="1"
+export BASE_URL=https://8ymfcyzexk.execute-api.us-east-2.amazonaws.com/prod
+curl -X POST $BASE_URL/feedback \
 -H "Content-Type: application/json" \
 --data @- <<REQUEST_BODY
 	{  
@@ -127,8 +128,7 @@ REQUEST_BODY
 * The `imageUrl` not a valid URL:
 
 ```bash
-curl -X POST \
-https://wcl387700f.execute-api.us-east-2.amazonaws.com/prod/feedback \
+curl -X POST $BASE_URL/feedback \
 -H "Content-Type: application/json" \
 --data @- <<REQUEST_BODY
 	{  
@@ -143,12 +143,11 @@ REQUEST_BODY
 * The `star ` parameter is not a number
 
 ```bash
-curl -X POST \
-https://wcl387700f.execute-api.us-east-2.amazonaws.com/prod/feedback \
+curl -X POST $BASE_URL/feedback \
 -H "Content-Type: application/json" \
 --data @- <<REQUEST_BODY
 	{  
-	   "name":"test unicorn",
+	   "name":"test user",
 	   "imageUrl":"https://en.wikipedia.org/wiki/Unicorn#/media/File:Oftheunicorn.jpg",
 	   "comment": "It is a test" ,
 	   "star": "4a"
@@ -169,15 +168,14 @@ You should get a 400 Bad Request response:
 Testing the **POST /feedback** API with right parameters:
 
 ```bash
-curl -X POST \
-https://wcl387700f.execute-api.us-east-2.amazonaws.com/prod/feedback \
+curl -X POST $BASE_URL/feedback \
 -H "Content-Type: application/json" \
 --data @- <<REQUEST_BODY
 	{  
-	   "name":"test unicorn",
-     "imageUrl":"https://en.wikipedia.org/wiki/Unicorn#/media/File:Oftheunicorn.jpg",
-     "comment": "It is a test" ,
-     "star": 4
+	  "name":"test user",
+    "imageUrl":"https://en.wikipedia.org/wiki/Unicorn#/media/File:Oftheunicorn.jpg",
+    "comment": "It is a test" ,
+    "star": 4
 	}
 REQUEST_BODY
 ```

@@ -7,9 +7,9 @@ In this module, we will download the source code for the frontend web UI of our 
 In your Cloud9 terminal, download the source code for our frontend web UI by running the following commands:
 
 ```bash
-  aws s3 cp s3://shenx-demo-public/workshop/feedback-ui.tar.gz /tmp/
+  aws s3 cp s3://workshop.reinforce.awsdemo.me/feedback-src.tar.gz /tmp/
   cd ~/environment/
-  tar xvfz /tmp/feedback-ui.tar.gz
+  tar xvfz /tmp/feedback-src.tar.gz
 ```
 
 ### Build the code
@@ -18,8 +18,6 @@ Now upgrade Node.js and build the code with the following commands:
 
 ```bash
 cd feedback-ui
-nvm install 8.12.0
-nvm use 8.12.0
 npm install
 npm run build
 
