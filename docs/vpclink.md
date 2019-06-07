@@ -35,7 +35,7 @@ In this module, you will integrate API Gateway to a web service running inside a
 
     Notice this instance is running in a private subnet and it doesn't have a public IP.
 
-6. Add the __default__ security group to the Cloud9 EC2 instance by right click the aws-cloud9-reiInforce-xxx instance -> Networking -> Change Security Groups; select the _default_ group and click the button __Assign Security Groups__.
+6. Add the security group rule Protocol:TCP, Port Range:80, Source:0.0.0.0/0 to the __default__ security group.
 
 7. Once in Cloud9, run the following commands in a terminal:
     
