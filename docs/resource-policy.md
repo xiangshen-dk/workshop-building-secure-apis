@@ -46,7 +46,7 @@ In this module, we will use a resource policy to control the access of an exampl
 
 5\. Click the 'Invoke URL' and verify that you don't have access anymore. Note: you may have to wait for a few seconds and refresh a couple of times.
 
-6\. The current error message gives away a bit more info. You can update the error message by chaning the __Mapping Templates__ under 'Access Denied[403]' in 'Gateway Responses':
+6\. The current error message gives away a bit more info. You can update the error message by changing the __Mapping Templates__ under 'Access Denied[403]' in 'Gateway Responses':
 
   ![Pet Store API](../screenshots/example-api-5.png)
 
