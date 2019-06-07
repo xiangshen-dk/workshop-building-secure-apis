@@ -40,13 +40,13 @@ In this module, you will integrate API Gateway to a web service running inside a
 7. Once in Cloud9, run the following commands in a terminal:
     
     !!! note "Important!"
-        You will run all terminal commands and modify all source code for these labs from within Cloud9 (**not** your local machine). Keep in mind that Cloud9 is a full fledged IDE running on an Amazon EC2 instance. You can edit code and create new files via the Cloud9 editor in your browser. You can also open multiple terminals if needed. 
+        You will run all terminal commands and modify all source code for these labs from within Cloud9 (**not** your local machine). Keep in mind that Cloud9 is a full fledged IDE running on an Amazon EC2 instance. You can edit code and create new files via the Cloud9 editor in your browser. You can also open multiple terminals if needed.
 
-    ``` bash
+    ``` bash hl_lines="2"
     sudo yum install jq -y
     curl -s  http://10.0.131.162/feedback|jq
     ```
-You should have some output like the following:
+You need replace the IP highlighted above to the privte IP of the lab-backend instance. You should have some output like the following:
     ![](../screenshots/lab-backend2.png)
 
 
