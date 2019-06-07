@@ -35,7 +35,9 @@ In this module, you will integrate API Gateway to a web service running inside a
 
     Notice this instance is running in a private subnet and it doesn't have a public IP.
 
-6. Once in Cloud9, run the following commands in a terminal:
+6. Add the __default__ security group to the Cloud9 EC2 instance by right click the aws-cloud9-reiInforce-xxx instance -> Networking -> Change Security Groups; select the _default_ group and click the button __Assign Security Groups__.
+
+7. Once in Cloud9, run the following commands in a terminal:
     
     !!! note "Important!"
         You will run all terminal commands and modify all source code for these labs from within Cloud9 (**not** your local machine). Keep in mind that Cloud9 is a full fledged IDE running on an Amazon EC2 instance. You can edit code and create new files via the Cloud9 editor in your browser. You can also open multiple terminals if needed. 
