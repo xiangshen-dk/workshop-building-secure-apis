@@ -37,6 +37,14 @@ In this module, you will integrate API Gateway to a web service running inside a
 
 6. Add the security group rule Protocol:TCP, Port Range:80, Source:0.0.0.0/0 to the __default__ security group.
 
+    A. From EC2 console, click on default security group
+    
+    ![](../screenshots/securitygroup-1.png)
+    
+    B. Click on Edit and add security group rule
+    
+    ![](../screenshots/securitygroup-2.png)
+
 7. Once in Cloud9, run the following commands in a terminal:
     
     !!! note "Important!"
