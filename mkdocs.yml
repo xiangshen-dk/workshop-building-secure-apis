@@ -4,11 +4,11 @@ nav:
   - Module 2 - Resource policy: resource-policy.md
   - Module 3 - Private integrations: vpclink.md
   - Module 4 - Input validation: input-validation.md
-  - Module 5 - X-Ray: xray.md
-  - Module 6 - WAF: waf.md
-  - Module 7 - Usage plan: usage-plan.md
-  - Module 8 - Authentication: auth.md
-  - Module 9 - Configure the web UI: webui.md  
+  - Module 5 - WAF: waf.md
+  - Module 6 - Usage plan: usage-plan.md
+  - Module 7 - Authentication: auth.md
+  - Module 8 - Configure the web UI: webui.md
+  - Module 9 - X-Ray: xray.md
   - Module 10 - Host the static files: static-site.md
   - Module 11 - Conclusions: conclusion.md
   - Module 12 - Cleanup: cleanup.md 
