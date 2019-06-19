@@ -15,14 +15,12 @@ You can configure API Gateway to perform basic validation of an API request befo
 
 For example, in our application, when defining an customization, we have to be sure that our new customization should have:
 
- - A **name** for the customization object 
- - An url for the cape's **image** .
- - A type of **socks** for our unicorn specified by an id.
- - A specific id for the **horn** to use.
- - An id for the pair of **glasses**.
- - A type of **cape** by id.
+ - A **name** for the user
+ - An url for an **image** .
+ - A string for **comment**
+ - An integer between 1 to 10 for **stars**
 
-This information should be in our request body to create a new customization that follows specific patterns.  E.g. the imageUrl should be a valid URL, the IDs for socks and horns are numeric values. 
+This information should be in our request body to create a new feedback that follows specific patterns.  E.g. the imageUrl should be a valid URL, the star is numeric value.
 
 By leveraging input validation on API Gateway, you can enforce required parameters and regex patterns each parameter must adhere to. This allows you to remove boilerplate validation logic from backend implementations and focus on actual business logic and deep validation.
 
@@ -71,7 +69,7 @@ For our **POST /customizations** API, we are going to use the following model:
 
 Now, follow these steps:
 
-1. Go to API Gateway console.
+1. Go to [API Gateway console](https://console.aws.amazon.com/apigateway).
 2. Click on the API **FeedbackSvc**
 3. Click on **Models**
 4. Click on **Create** and create a model with the following values:
@@ -100,7 +98,7 @@ Once we have created our model, we need to apply it to our customizations/post m
 	
 	> On step number 2 you might have noticed that we can also validate query parameters and request headers in addition to request body. This is really useful when our application uses both at the same time and we want to have complex validations. If you want to find more information, [here](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-method-request-validation.html) is our documentation about this.
 
-1. Now it's time to deploy and test! Go to the **Actions** menu and click on **Deploy API**. Select `dev` as the **Deployment stage** and confirm by clicking **Deploy**.
+1. Now it's time to deploy and test! Go to the **Actions** menu and click on **Deploy API**. Select `prod` as the **Deployment stage** and confirm by clicking **Deploy**.
 
 ## Test your Validation
 
@@ -111,10 +109,13 @@ Use curl, you can try making requests to the **POST /feedback** API using invali
 Here are some example request bodies that fail:
 !!! danger "Please replace the BASE_URL value with your invoke URL from the deployed stage."
 
-* Missing fields:
+* Test case #1: missing fields
 
 ```bash hl_lines="1"
 export BASE_URL=https://8ymfcyzexk.execute-api.us-east-2.amazonaws.com/prod
+```
+
+```bash
 curl -X POST $BASE_URL/feedback \
 -H "Content-Type: application/json" \
 --data @- <<REQUEST_BODY
@@ -125,7 +126,7 @@ curl -X POST $BASE_URL/feedback \
 REQUEST_BODY
 ```
 
-* The `imageUrl` not a valid URL:
+* Test case #2: the `imageUrl` is not a valid URL
 
 ```bash
 curl -X POST $BASE_URL/feedback \
@@ -140,7 +141,7 @@ curl -X POST $BASE_URL/feedback \
 REQUEST_BODY
 ```
 
-* The `star ` parameter is not a number
+* Test case #3: the `star ` parameter is not a number
 
 ```bash
 curl -X POST $BASE_URL/feedback \
