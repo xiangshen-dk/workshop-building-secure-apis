@@ -38,15 +38,16 @@ Follow the steps below to create the set up resources (VPC, Cloud9 environment, 
 
 1. 	Click **Next**
 1. In the **Step 2: Specify stack details** page:
-	* name you stack ***`ReinforceStack`***
+	* Accept the default name ***`ReinforceStack`*** for your stack
 	and click **Next**
 	
 1. In the **Step 3:Configure stack options** page, accept the default configurations and click **Next**
-1. Review the configuration and click **Create stack**
+1. Review the configuration and check the checkbox **I acknowledge that AWS CloudFormation might create IAM resources with custom names.**
+1. Click **Create stack**
 
-1. It will take a few minutes for the Stack to create. Choose the **Stack Info** tab to go to the overall stack status page and wait until the stack is fully launched and shows a status of *CREATE_COMPLETE*. Click the refresh icon periodically to see progress update.
+1. It will take a few minutes for the stack to create. The **Stack details** page shows the overall stack status. You can wait until the stack is fully launched and shows a status of *CREATE_COMPLETE* (you can click the refresh icon periodically to see progress update). Or, you can move to [**Module 2 - Resource policy**](/resource-policy/), which doesn't depend on the CloudFormation stack.
 
-	> Note: When you launch the stack, CloudFormation deploys a nested CloudFormation stack to launch the Cloud9 resources. You can safely ignore that template which is prefixed with "aws-cloud9-reInforce".
+	> Note: When you launch the stack, CloudFormation deploys a nested CloudFormation stack to launch the Cloud9 resources. You can safely ignore that template which is prefixed with "aws-cloud9-reInforceCloud9".
 
 This CloudFormation stack spins up the below resources:
 
