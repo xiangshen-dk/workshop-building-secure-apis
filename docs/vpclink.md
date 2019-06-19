@@ -105,7 +105,7 @@ Go back to [API Gateway](https://console.aws.amazon.com/apigateway/).In the left
 
 ![](../screenshots/vpc-link1.png)
 
-Note: It might take a mintue or two to provision the VPC link.
+__Note__: It might take a mintue or two to provision the VPC link.
 
 ### Create a new API to consume the VpcLink
 
@@ -117,7 +117,12 @@ Note: It might take a mintue or two to provision the VPC link.
 3. Select the new ___feedback___ resource, from __Actions__ choose __Create Method__. Add a __GET__ method for the resource as following. Make sure the __Endpoint URL__ is the DNS name of the NLB starting with ___http___ and ends with ___feedback___, for example:
 http://reinforce-lab-nlb-1f8e6550f0e7ac3f.elb.us-east-2.amazonaws.com/feedback
 
-    Note: You have to wait until the VPC link created in the previous step is ready. Otherwise, you will not see it in the __VPC Link__ dropdown list.
+    You can run the following command to get the endpoint url:
+    ```bash
+    echo http://$NLB_DNS/feedback
+    ```
+
+    __Note__: You have to wait until the VPC link created in the previous step is ready. Otherwise, you will not see it in the __VPC Link__ dropdown list.
 
     ![](../screenshots/lab-backend5.png)
 
