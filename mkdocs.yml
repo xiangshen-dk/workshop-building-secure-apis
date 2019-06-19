@@ -1,6 +1,6 @@
 site_name: Building Secure APIs in the Cloud
 nav:
-  - Module 1 - Setup the project: setup.md
+  - Module 1 - Set up the project: setup.md
   - Module 2 - Resource policy: resource-policy.md
   - Module 3 - Private integrations: vpclink.md
   - Module 4 - Input validation: input-validation.md
