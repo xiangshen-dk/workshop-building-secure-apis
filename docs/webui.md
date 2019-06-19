@@ -1,5 +1,6 @@
 # Create the web UI
 Time Estimate: 20 - 25 minutes  
+
 In this module, we will download the source code for the frontend web UI of our application, hook it into our API, and test using it from our development environment.
 
 ### Download the code 

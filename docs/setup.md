@@ -1,5 +1,6 @@
 # Set up the project
 Time Estimate: 10 - 15 minutes  
+
 In this module, we will create some of the AWS resources you'll need for your labs via a provided AWS CloudFormation template. Once the CloudFormation template starts you don't have to wait and can move the second module.
 
 ??? info "What is AWS CloudFormation?"

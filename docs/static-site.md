@@ -1,5 +1,6 @@
 # Host the static files(Optional)
 Time Estimate: 10 - 15 minutes  
+
 In this module, we will deploy the web UI of our application to Amazon S3 and front it with a CloudFront distribution.
 
 ### Create S3 bucket to host the static files

@@ -1,5 +1,6 @@
 # Control Access to an API with Resource Policy
 Time Estimate: 15 - 20 minutes  
+
 In this module, we will first create a sample API in Amazon API Gateway while our CloudFormation stack launches. We'll then explore how to use a resource policy to control whether a specified principal can access that API.
 
 ??? info "What is Amazon API Gateway?"

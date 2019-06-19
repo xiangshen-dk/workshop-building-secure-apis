@@ -1,5 +1,6 @@
 # Using AWS Cognito to protect the APIs
 Time Estimate: 15 - 20 minutes  
+
 In this module, we will configure our API to use Amazon Cognito for authorization and test authenticating and posting some data to our API.
 
 ### Create Cognito user pool
