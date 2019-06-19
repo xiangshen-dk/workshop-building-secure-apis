@@ -5,6 +5,8 @@ AWS API gateway supports a variety of integrations including Lambda, public/priv
 
 In this module, you will integrate API Gateway to a web service running inside a private subnet of your VPC.
 
+__Note:__ Starting from this module, we need the resources provisioned by the CloudFormation stack in module 1.
+
 ### Verify project setup
 
 1. Go to the [CloudFormation Console](https://console.aws.amazon.com/cloudformation) and make sure the workshop CloudFormation stacks in the __CREATE_COMPLETE__ status.
@@ -35,26 +37,19 @@ In this module, you will integrate API Gateway to a web service running inside a
 
     Notice this instance is running in a private subnet and it doesn't have a public IP.
 
-6. Add the security group rule Protocol:TCP, Port Range:80, Source:0.0.0.0/0 to the __default__ security group.
-
-    A. From EC2 console, click on default security group
-    
-    ![](../screenshots/securitygroup-1.png)
-    
-    B. Click on Edit and add security group rule
-    
-    ![](../screenshots/securitygroup-2.png)
-
-7. Once in Cloud9, run the following commands in a terminal:
+6. Once in Cloud9, run the following commands in a terminal:
     
     !!! note "Important!"
         You will run all terminal commands and modify all source code for these labs from within Cloud9 (**not** your local machine). Keep in mind that Cloud9 is a full fledged IDE running on an Amazon EC2 instance. You can edit code and create new files via the Cloud9 editor in your browser. You can also open multiple terminals if needed.
-
-    ``` bash hl_lines="2"
+    ``` bash
+    # Install jq, a lightweight and flexible command-line JSON processor
     sudo yum install jq -y
+    ```
+    ``` bash hl_lines="1"
     curl -s  http://10.0.131.162/feedback|jq
     ```
-You need replace the IP highlighted above to the privte IP of the lab-backend instance. You should have some output like the following:
+__Note:__ You need to replace the IP highlighted above to the privte IP of the lab-backend instance. You should have some output like the following:
+
     ![](../screenshots/lab-backend2.png)
 
 
@@ -91,7 +86,7 @@ You need replace the IP highlighted above to the privte IP of the lab-backend in
     --default-actions Type=forward,TargetGroupArn=$TG_ARN
 
     ```
-2. Go to the [Target Groups](https://console.aws.amazon.com/ec2/v2/home) under __LOAD BALANCING__ to check if the rgistered targets are healthy. If it's in the 'initial' status, wait until it becomes healthy.
+2. Go to the [EC2 web console](https://console.aws.amazon.com/ec2/v2/home) in the left panel under __LOAD BALANCING__, click __Target Groups__ and __reinforce-targets__. Under the __Targets__ tab, check if the rgistered target is healthy. If it's in the 'initial' status, wait until it becomes healthy.
     ![](../screenshots/lab-backend3.png)
 
 3. Check the NLB endpoint by running the following commands inside the same terminal:
@@ -106,7 +101,7 @@ You should see similar json output as previously.
 
 ### Create VpcLink
 
-Go back to API Gateway, under __VPC Links__ create a new one and name it ___reinforce-vpclink___ as following:
+Go back to [API Gateway](https://console.aws.amazon.com/apigateway/).In the left side, click __VPC Links__ and create a new one. Select __reinforce-lab-nlb__ as the __Target NLB__ and name the VpcLink ___reinforce-vpclink___ as following:
 
 ![](../screenshots/vpc-link1.png)
 
@@ -114,7 +109,7 @@ Note: It might take a mintue or two to provision the VPC link.
 
 ### Create a new API to consume the VpcLink
 
-1. Create a new API ___FeedbackSvc___
+1. Click the linik __APIs__ in the left side and create a new API ___FeedbackSvc___
     ![](../screenshots/lab-backend4.png)
 
 2. From the __Actions__ drop-down list, create a new resource ___feedback___
