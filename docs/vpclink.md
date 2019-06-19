@@ -110,6 +110,8 @@ Go back to API Gateway, under __VPC Links__ create a new one and name it ___rein
 
 ![](../screenshots/vpc-link1.png)
 
+Note: It might take a mintue or two to provision the VPC link.
+
 ### Create a new API to consume the VpcLink
 
 1. Create a new API ___FeedbackSvc___
@@ -120,6 +122,8 @@ Go back to API Gateway, under __VPC Links__ create a new one and name it ___rein
 3. Select the new ___feedback___ resource, from __Actions__ choose __Create Method__. Add a __GET__ method for the resource as following. Make sure the __Endpoint URL__ is the DNS name of the NLB starting with ___http___ and ends with ___feedback___, for example:
 http://reinforce-lab-nlb-1f8e6550f0e7ac3f.elb.us-east-2.amazonaws.com/feedback
 
+    Note: You have to wait until the VPC link created in the previous step is ready. Otherwise, you will not see it in the __VPC Link__ dropdown list.
+
     ![](../screenshots/lab-backend5.png)
 
     Click __Save__ to create the method and you can use the __TEST__ link to test it.
@@ -127,4 +131,7 @@ http://reinforce-lab-nlb-1f8e6550f0e7ac3f.elb.us-east-2.amazonaws.com/feedback
 4. Create a __POST__ method in the same way by switching from GET to POST.
     ![](../screenshots/lab-backend6.png)
 
-5. Finally, deploy the API to a __prod__ stage.
+5. Finally, deploy the API to a __prod__ stage. You can click the link to verify the API, for example:
+https://21kz57tm75.execute-api.us-east-1.amazonaws.com/prod/feedback
+
+Note: Don't forget the append __feedback__ at the end of the endpoint.
