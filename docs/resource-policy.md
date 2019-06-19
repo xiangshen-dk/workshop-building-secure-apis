@@ -11,11 +11,11 @@ In this module, we will use a resource policy to control the access of an exampl
 ??? info "Amazon API Gateway resource policies"
 	Amazon API Gateway resource policies are JSON policy documents that you attach to an API to control whether a specified principal (typically an IAM user or role) can invoke the API. You can use API Gateway resource policies to allow your API to be securely invoked by: 1) users from a specified AWS account; 2) specified source IP address ranges or CIDR blocks; 3) specified virtual private clouds (VPCs) or VPC endpoints (in any account), see https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-resource-policies.html.
 
-1. Go to [Amazon API Gateway](https://us-west-2.console.aws.amazon.com/apigateway/home?region=us-east-1#/ "API Gateway Console"), click the button __Create API__(or __Get Started__ if it's your first time to use API Gateway)
+1. Go to [Amazon API Gateway](https://console.aws.amazon.com/apigateway/ "API Gateway Console"), click the button __Create API__(or __Get Started__ if it's your first time to use API Gateway)
 
 2. Select __Example API__ and click the button __Import__ at the bottom of the page:
   ![Create new API](../screenshots/example-api-1.png)
-3. After the __Pet Store__ example API is created, select the __GET__ methods and you can see the integration endpoints on the right side. It could be a __Mock Endpoint__ or an __http endpoint__. For instance, in the following screenshot, we have http://petstore-demo-endpoint.execute-api.com/petstore/pets as the endpoint. You can also click the __TEST__ link in the middle to invoke the endpoint. It will provide the request and response for the API call.
+3. After the __Pet Store__ example API is created, select the __GET__ methods and you can see the integration endpoints on the right side. It could be a __mock endpoint__ or an __http endpoint__. For instance, in the following screenshot, we have http://petstore-demo-endpoint.execute-api.com/petstore/pets as the endpoint. You can also click the __TEST__ link in the middle to invoke the endpoint. It will provide the request and response for the API call.
 
   ![Integration endpoint](../screenshots/example-api-1a.png)
 4. The API is not public visible until you deploy it. Click the button __Actions__ and select __Deploy API__:
@@ -44,7 +44,7 @@ In this module, we will use a resource policy to control the access of an exampl
 
 4\. Click the __Actions__ button and deploy the API again to the _test_ stage.
 
-5\. Click the 'Invoke URL' and verify that you don't have access anymore. Note: you may have to wait for a few seconds and refresh a couple of times.
+5\. Click the 'Invoke URL' and verify that you don't have access anymore. __Note__: you may have to wait for a few seconds and refresh a couple of times.
 
 6\. The current error message gives away a bit more info. You can update the error message by changing the __Mapping Templates__ under 'Access Denied[403]' in 'Gateway Responses':
 
