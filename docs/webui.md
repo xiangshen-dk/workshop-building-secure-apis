@@ -46,7 +46,7 @@ Refresh the preview window, you should have a web page displayed. If you still h
 
 ### Configure Cognito for authentication
 
-Go back to your [**Cognito**](https://us-west-2.console.aws.amazon.com/cognito/home?region=us-west-2 "AWS Cognito") user pool and in __App client settings__, do the following:
+Go back to your [**Cognito**](https://console.aws.amazon.com/cognito/home "AWS Cognito") user pool and in __App client settings__, do the following:
 
 * Enable __Cognito User Pool__ for webapp (mark the checkbox under **Enabled Identity Providers**)
 * Add Cloud9 preview URL with ==__/callback__== to the callback URL. For example:
@@ -86,26 +86,13 @@ Go to [**API Gateway**](https://us-west-2.console.aws.amazon.com/apigateway/home
 
 * Select __Enable CORS__ and click the button __Enable CORS and replace existing CORS headers__.
 
-    - Ignore the errors in the reponse. We will fix them in later steps.
+    - Ignore the errors if there is any. We will fix them in later steps.
 
 * A new method __OPTIONS__ has been created. Select it, then click __Method Response__.
 
   ![API Gateway - method reponse](../screenshots/api-gw-1.png)
 
-* Click the link __+ Add Response__ and add HTTP status code __200__. Click the {++Create++} checkmark to save.
-
-  ![API Gateway - status 200](../screenshots/api-gw-2.png)
-
-* Expand the code 200. Add below names to __Response Headers for 200__ one by one
-
-    |Name             |
-    |-----------------------------|
-    |Access-Control-Allow-Headers|
-    |Access-Control-Allow-Methods|
-    |Access-Control-Allow-Origin|
-
-
- * The final result should look like this:
+ * Make sure you have the following:
 
   ![API Gateway - status 200](../screenshots/api-gw-3.png)
 
@@ -115,7 +102,7 @@ Go to [**API Gateway**](https://us-west-2.console.aws.amazon.com/apigateway/home
 
 * Under __Integration Response__, expand the line by clicking the black arrow.
 
-* Add the folllowing to __Header Mappings__:
+* Make sure you have the folllowing __Header Mappings__ under the '200' response:
 
 |Response header              |Mapping value|
 |-----------------------------|-------------|
@@ -123,7 +110,7 @@ Go to [**API Gateway**](https://us-west-2.console.aws.amazon.com/apigateway/home
 |Access-Control-Allow-Methods|'POST,GET,OPTIONS'|
 |Access-Control-Allow-Origin |'*'|
 
-* The result looks like the following:
+* It should look like the following:
 
   ![API Gateway - header](../screenshots/api-gw-5.png)
 

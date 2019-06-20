@@ -114,7 +114,7 @@ Make a note of the new password. You will need it to login to the application.
 
 ### Test adding feedback
 
-1. Back in Cloud9, test adding some new feedback with the below command, being sure to replace both ```eyJraW......rCtYSnaA``` in the Authorization header with your own ==*IdToken*== value.
+1\. Back in Cloud9, test adding some new feedback with the below command, being sure to replace both ```eyJraW......rCtYSnaA``` in the Authorization header with your own ==*IdToken*== value.
 
 ```bash hl_lines="1"
 curl -H "Authorization: eyJraW......rCtYSnaA" \
