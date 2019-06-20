@@ -65,12 +65,13 @@ Make a note for the domain name, for example: `https://feedback-users-shenx.auth
 
 ### Update UI configuration
 
-Go back to your Cloud9 editor and open the **env.js** file under the **src** directory. Update it with the __domain URL__, __client ID__, and __API GW endpoint__. For example:
+Go back to your Cloud9 editor and open the **env.js** file under the **src** directory. Update it with the __domain URL__, __client ID__, __API GW endpoint__, and __API Key__. For example:
 ```javascript
 export default {
   'AWS_COGNITO_USER_POOL_DOMAIN': 'feedback-users-shenx.auth.us-west-2.amazoncognito.com',
   'AWS_COGNITO_CLIENT_ID': '4ea782m3eaupr6jrv84m031qo2',
-  'API_BASE_URL': 'https://tzr1eokf4k.execute-api.us-west-2.amazonaws.com/Prod'
+  'API_BASE_URL': 'https://tzr1eokf4k.execute-api.us-west-2.amazonaws.com/Prod',
+  'API_KEY': 'your-api-key-here'
 }
 ```
 
