@@ -30,7 +30,7 @@ In API Gateway, a [**model**](https://docs.aws.amazon.com/apigateway/latest/deve
 
 When we define our model, we can ensure that the parameters we are receiving are in the format we are expecting. Furthermore, you can check them against regex expressions. A good tool to test if your regex is correct is [regexr.com](https://regexr.com/). 
 
-For our **POST /customizations** API, we are going to use the following model:
+For our **POST /feedback** API, we are going to use the following model:
 
 ```json
 {
@@ -83,7 +83,7 @@ Now, follow these steps:
 Once we have created our model, we need to apply it to our customizations/post method.
 
 1. Within the API Gateway Console, click on FeedbackSvc, **Resources**
-1. Click under /customizations --> **POST** method
+1. Click under /feedback --> **POST** method
 
 	![Customizations ](../images/06_customizations.png)
 
@@ -186,6 +186,12 @@ The result should be:
 ```javascript
 {"result": "ok"}
 ```
+
+You can run the following command to verify if the POST call is successful.
+```bash
+curl -s $NLB_DNS/feedback |jq
+```
+You should be able to see the last record is returned from the API.
 
 ## Additional input validation options
 
