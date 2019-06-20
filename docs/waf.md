@@ -24,8 +24,8 @@ Now let's start creating an AWS WAF to give us additional protection:
 	* **CloudWatch metric name**: this should be automatically populated for you
 	* **Region**: select the AWS region you chose for previous steps of the workshop
 	* **Resource type to associate with web ACL**: Pick `API Gateway`
-	* **Amazon API Gateway API**: Pick the API Gateway we deployed previously, `CustomizeUnicorns`
-	* **Stage**: select `dev`
+	* **Amazon API Gateway API**: Pick the API Gateway we deployed previously, `FeedbackSvc`
+	* **Stage**: select `prod`
 
 	![screenshot](images/web-acl-name.png)
 	
@@ -123,7 +123,7 @@ Now let's start creating an AWS WAF to give us additional protection:
 	* Click the **Create Rule**
 	* Give it a name, like `RequestFloodRule`
 	* For **Rule type**, select `Rate-based rule`
-	* For **Rate limit**, use `2000` 
+	* For **Rate limit**, use `2000`
 	*  Then click **Create**
 
 	![screenshot](images/request-flood-rule.png)
@@ -134,7 +134,7 @@ Now let's start creating an AWS WAF to give us additional protection:
 
 	![screenshot](images/list-rules.png)
 
-1. Click **Review and create** 
+1. Click **Review and create**
 
 1. In the next page, review the configuration and click **Confirm and Create** 	
 	
@@ -145,9 +145,15 @@ You have now added a WAF to our API gateway stage!
 ### Test requests with WAF protection 
 
 1. First, send some valid requests using curl to make sure well-behaving requests are getting through. For example:
+
+```bash hl_lines="1"
+# Important: replace the endpoint to yours
+export API_ENDPOINT=\
+https://d8hr9nesd2.execute-api.us-east-2.amazonaws.com/prod/feedback
+```
+
 ```bash
-curl -X POST \
-https://8ymfcyzexk.execute-api.us-east-2.amazonaws.com/prod/feedback \
+curl -X POST $API_ENDPOINT \
 -H "Content-Type: application/json" \
 --data @- <<REQUEST_BODY
 	{  
@@ -159,11 +165,10 @@ https://8ymfcyzexk.execute-api.us-east-2.amazonaws.com/prod/feedback \
 REQUEST_BODY
 ```
 
-1. Next, we can easily test the large request body rule by sending a few **POST /feedback** requests with a giant request body. If you don't receive an error immediately after applying WAF, you might need to wait a minute to for these changes to propagate.
+2\. Next, we can easily test the large request body rule by sending a few **POST /feedback** requests with a giant request body. If you don't receive an error immediately after applying WAF, you might need to wait a minute to for these changes to propagate.
 
 ```bash
-curl -X POST \
-https://8ymfcyzexk.execute-api.us-east-2.amazonaws.com/prod/feedback \
+curl -X POST $API_ENDPOINT \
 -H "Content-Type: application/json" \
 --data @- <<REQUEST_BODY
 	{  
@@ -179,16 +184,16 @@ You should see your requests getting blocked with a **Forbidden** response
 	
 &#128161; **Note:** It may take a minute for WAF changes to propagate. If your test request went through successfully, retry a few times until you start receiving 403 errors as WAF kick in effect.  &#128161;
 	
-1. Next, let's try a request with a SQL injection attack in the request URI for a **GET /feedback** request
+3\. Next, let's try a request with a SQL injection attack in the request URI for a **GET /feedback** request
 
 
 ```bash
-curl "https://8ymfcyzexk.execute-api.us-east-2.amazonaws.com/prod/feedback/1;drop table comment;"
+curl "${API_ENDPOINT};drop table comment;"
 ```
 
 You should see your requests getting blocked with a **Forbidden** response
 
-1. The WAF console gives you metrics and sample requests that are allowed/denied by the WAF rules. You can find this information by going to the WAF console, under **Web ACLs**, select the AWS region and then the WAF we just created. 
+1. The [WAF console](https://console.aws.amazon.com/waf/home#/webacls) gives you metrics and sample requests that are allowed/denied by the WAF rules. You can find this information by going to the WAF console, under **Web ACLs**, select the AWS region and then the WAF we just created. 
 
 	**Note:** It can take a few minutes before the metrics and sample requests start showing up in the WAF console.
 
@@ -197,8 +202,6 @@ You should see your requests getting blocked with a **Forbidden** response
 ## Extra credit 
 
 Use a load test tool like [Artillery](https://artillery.io/docs/getting-started/) to test sending more than 2000 requests in 5 minutes to test the request flood rule. 
-
-Note that you will need to configure Artillery to send the `Authorization` headers.
 
 If you have completed the **Usage Plan** module, your API may be throttled first by the usage plan based on the API key.
 
