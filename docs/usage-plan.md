@@ -6,7 +6,7 @@ You can leverage Usage Plans with Amazon API Gateway to set limits on request ra
 To tally the number of requests based on the caller, API Gateway uses API Keys to keep track of different consumers for your API. In our use case, requests coming from different companies can be calculated separately. 
 
 ## Create an API Gateway usage plan 
-1. In the API Gateway console, go to **Usage Plans** tab, and click **Create** 
+1. In the [API Gateway console](https://console.aws.amazon.com/apigateway/home), click the **Usage Plans** link on the left, and click **Create** 
 1. Fill in the details for the usage plan 
 	
 	* **Name**: ```Basic```
@@ -20,7 +20,11 @@ To tally the number of requests based on the caller, API Gateway uses API Keys t
 	
 	Click **Next**
 	
-1. Associate the API we created previously with the usage plan. Pick `prod` stage. And click the checkmark to confirm. Then click **Next**
+1. Associate the API we created previously with the usage plan.
+	* Click the button __Add API Stage__
+	* Select __FeedbackSvc__
+	* Pick `prod` stage
+	* Click the checkmark to confirm. Then click **Next**
 
 	![add stage to Usage plan](images/5A-add-stage-to-plan.png)
 
@@ -53,16 +57,20 @@ Now, we need to modify our API gateway so requests must have an API key present.
 
 1\. Go back to your terminal and use curl to invoke the API. Now the API is enforcing API keys, the request will fail if you don't include the API key header.
 
-Try sending the following request using Postman like you did before. You should see the request fail with a `{"message": "Forbidden"}` response.
+Try sending the following request like you did before. You should see the request fail with a `{"message": "Forbidden"}` response.
 
 ```bash
-curl https://8ymfcyzexk.execute-api.us-east-2.amazonaws.com/prod/feedback
+curl $API_ENDPOINT
 ```
 
 2\. You can add the API key request header when using curl, for example:
   
+```bash hl_lines="1"
+# Important: change the api key to your onw key
+API_KEY=7J5UvskjNg7VAXSaye2P66u04KYWDEDhaHoEPkox
+```
 ```bash
-curl -H"x-api-key: o1JHyy8AKZXOT5HZiNn06Yse2L8r6yz8HShW0zM1" https://8ymfcyzexk.execute-api.us-east-2.amazonaws.com/prod/feedback
+curl -s -H"x-api-key: $API_KEY" $API_ENDPOINT | jq
 ```
   
 You can find the auto-generated API key value by going to the **API Keys** tab in the API gateway console --> click on the API key you created in previous steps --> click **Show** next to **API Key**
@@ -70,7 +78,7 @@ You can find the auto-generated API key value by going to the **API Keys** tab i
   ![](../images/5C-find-api-key.png)
 
 
-You should now see the request go through
+You should now see the request go through.
 
 ## Extra credit
 
