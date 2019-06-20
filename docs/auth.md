@@ -8,7 +8,7 @@ In this module, we will configure our API to use Amazon Cognito for authorizatio
 ??? info "What is Amazon Cognito"
     Amazon Cognito lets you easily add user sign-up and authentication to your mobile and web apps. Amazon Cognito also enables you to authenticate users through an external identity provider and provides temporary security credentials to access your app’s backend resources in AWS or any service behind Amazon API Gateway. Cognito will be our mechanism for enabling user authentication for access to our backend API. For more information, see https://aws.amazon.com/cognito/. 
 
-1. Now, under **Services**, search for and open [**Cognito**](https://us-west-2.console.aws.amazon.com/cognito/home?region=us-west-2 "AWS Cognito"){:target="_blank"}.
+1. Now, under **Services**, search for and open [**Amazon Cognito**](https://console.aws.amazon.com/cognito/home "AWS Cognito"){:target="_blank"}.
 
 2. Click on **Manage User Pools** and select **Create a user pool**. Name it
    ```feedback-users```.
@@ -91,7 +91,7 @@ Make a note of the new password. You will need it to login to the application.
 
 ### Add authorizer to API Gateway
 
-1. In another browser tab, open [**API Gateway**](https://us-west-2.console.aws.amazon.com/apigateway/home?region=us-west-2 "API Gateway"){:target="_blank"} in the AWS console. Select the API __awscodestar-feedback-svc-xxxxxx__ and click on **Authorizers** in the menu. This API was automatically deployed by our CodePipeline based on the provided source code.
+1. In another browser tab, open [**API Gateway**](https://console.aws.amazon.com/apigateway/home "API Gateway"){:target="_blank"} in the AWS console. Select the API __FeedbackSvc__ and click on **Authorizers** in the menu. This API was automatically deployed by our CodePipeline based on the provided source code.
 
 2. Click on **Create New Authorizer** and enter the following values:
     - For **Name**, enter ```feedback-authorizer```.
@@ -110,24 +110,31 @@ Make a note of the new password. You will need it to login to the application.
     
     ![](../screenshots/screen8.PNG)
 
-5. Now, under **Actions**, select **Deploy API** and choose ***Prod*** as the **Deployment Stage**. Click **Deploy**. Make a note of the **Invoke URL** for your API's Prod Stage, e.g. `https://oq0x443wv7.execute-api.us-west-2.amazonaws.com/Prod`
+5. Now, under **Actions**, select **Deploy API** and choose ***Prod*** as the **Deployment Stage**. Click **Deploy**.
 
 ### Test adding feedback
 
-1. Back in Cloud9, test adding some new feedback with the below command, being sure to replace both ```eyJraW......rCtYSnaA``` in the Authorization header with your own ==*IdToken*== value and the URL with your own API's prod stage invoke URL with ==/feedback== appended.
+1. Back in Cloud9, test adding some new feedback with the below command, being sure to replace both ```eyJraW......rCtYSnaA``` in the Authorization header with your own ==*IdToken*== value.
 
-    ```bash
-    curl -H "Authorization: eyJraW......rCtYSnaA" \
-      -d '{"name":"test_user", "feedback": "test feedback"}' \
-      -X POST https://xxxxxx.execute-api.us-west-2.amazonaws.com/Prod/feedback
-    ```
+```bash hl_lines="1"
+curl -H "Authorization: eyJraW......rCtYSnaA" \
+-X POST $API_ENDPOINT \
+-H "Content-Type: application/json" \
+--data @- <<REQUEST_BODY
+    {  
+     "name":"auth-user-test",
+     "comment": "It is a test for authentication.",
+     "imageUrl":"https://en.wikipedia.org/wiki/Unicorn#/media/File:Oftheunicorn.jpg",
+     "star": 4
+    }
+REQUEST_BODY
+```
+If successful, you should see an output of _{"result": "ok"}_
 
-    - If successful, you should see an output of *{"Output": "Data Saved"}*
+2\. Now to test reading the new feedback:
 
-2. Now to test reading the new feedback:
+```bash
+curl -s -H"x-api-key: $API_KEY" $API_ENDPOINT | jq
+```
 
-    ```bash
-    curl  https://xxxxxxxxxx.execute-api.us-west-2.amazonaws.com/Prod/feedback
-    ```
-
-    - If successful, you should see a response containing the feedback you just submitted.
+If successful, you should see a response containing the feedback you just submitted.
