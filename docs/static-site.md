@@ -35,7 +35,6 @@ Now, since we have updated the code, we need to rebuild the deployment package.
 
 ```bash
   cd ~/environment/feedback-ui
-  nvm use 8.12.0
   npm run build
 ```
 
