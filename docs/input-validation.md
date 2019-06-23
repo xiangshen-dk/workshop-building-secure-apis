@@ -13,16 +13,16 @@ A great [XKCD comic](https://xkcd.com/327/) demonstrate this point well:
 
 You can configure API Gateway to perform basic validation of an API request before proceeding with the integration request. When the validation fails, API Gateway immediately fails the request, returns a 400 error response to the caller, and publishes the validation results in CloudWatch Logs. This reduces unnecessary calls to the backend. More importantly, it lets you focus on the validation efforts specific to your application.
 
-For example, in our application, when defining an customization, we have to be sure that our new customization should have:
+For example, let's assume that in our application, we want to be sure that all posted feedback contains the following:
 
- - A **name** for the user
- - An url for an **image** .
- - A string for **comment**
- - An integer between 1 to 10 for **stars**
+ - A **name** for the user.
+ - A URL for an **image**.
+ - A string for the **comment**.
+ - An integer between 1 and 10 for **stars**.
 
-This information should be in our request body to create a new feedback that follows specific patterns.  E.g. the imageUrl should be a valid URL, the star is numeric value.
+This information should be in the request body to submit new feedback and follow certain patterns, e.g. the imageUrl should be a valid URL and the star should be a numeric value.
 
-By leveraging input validation on API Gateway, you can enforce required parameters and regex patterns each parameter must adhere to. This allows you to remove boilerplate validation logic from backend implementations and focus on actual business logic and deep validation.
+By leveraging input validation on API Gateway, you can enforce such required parameters as well as the regex patterns each parameter must adhere to. This allows you to remove boilerplate validation logic from your backend implementations and focus on actual business logic and deep validation.
 
 ## Create a model for your Customizations
 
@@ -69,104 +69,105 @@ For our **POST /feedback** API, we are going to use the following model:
 
 Now, follow these steps:
 
-1. Go to [API Gateway console](https://console.aws.amazon.com/apigateway).
-2. Click on the API **FeedbackSvc**
-3. Click on **Models**
-4. Click on **Create** and create a model with the following values:
-	- Model name: `CustomizationPost`
+1. Go back to the [API Gateway console](https://console.aws.amazon.com/apigateway).
+2. Click on the API **FeedbackSvc**.
+3. Click on **Models**.
+4. Click **Create** and create a model with the following values:
+	- Model name: `FeedbackPost`
 	- Content type: `application/json`
-1. In the model schema, use the one provided before (the *json* before this section).
-1. Once everything is filled, click on **Create model**.
+1. In the model schema, use the one provided above (the *json* before this section).
+1. Once everything is entered like below, click on **Create model**.
 	
 	![Create model](../images/06_api_model.png)
 
-Once we have created our model, we need to apply it to our customizations/post method.
+Once we have created our model, we need to apply it to our POST /feedback method.
 
-1. Within the API Gateway Console, click on FeedbackSvc, **Resources**
-1. Click under /feedback --> **POST** method
+1. Within the API Gateway Console, expand **FeedbackSvc** and select **Resources**.
+1. Under **/feedback** open the **POST** method.
+1. Click on **Method Request**.
 
 	![Customizations ](../images/06_customizations.png)
 
-1. Click on **Method Request**
-1. Under **Request Validator**, click on the pencil to edit it. Select **Validate Body**. Then, click on the tick to confirm the change.
+1. Next to **Request Validator**, click on the pencil to edit. Select **Validate Body**. Then, click on the tick to confirm the change.
 1. Under **Request Body**, click on **Add model** with the following values:
 	- Content type: `application/json`
-	- Model name: `CustomizationPost`
+	- Model name: `FeedbackPost`
 1. Click to the tick to confirm.
 
 	![Method Execution](../images/06_method_execution.png)
 	
-	> On step number 2 you might have noticed that we can also validate query parameters and request headers in addition to request body. This is really useful when our application uses both at the same time and we want to have complex validations. If you want to find more information, [here](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-method-request-validation.html) is our documentation about this.
+	> On step number 2 you might have noticed that we can also validate query parameters and request headers in addition to the request body. This is useful when our application uses both at the same time and we want to have complex validations. If you want to find more information, see our documentation [here](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-method-request-validation.html).
 
-1. Now it's time to deploy and test! Go to the **Actions** menu and click on **Deploy API**. Select `prod` as the **Deployment stage** and confirm by clicking **Deploy**.
+1. Now it's time to deploy and test! Go to the **Actions** menu and click on **Deploy API**. Select `prod` as the **Deployment stage** and confirm by clicking **Deploy**. Take note of the invoke URL for testing.
 
 ## Test your Validation
 
-Use curl, you can try making requests to the **POST /feedback** API using invalid parameters and see the input validation kick in: 
+Using curl, you can try making requests to the **POST /feedback** API using invalid parameters and see the input validation kick in. 
 
-### Wrong parameters = Invalid request:
+### Wrong parameters = Invalid request
 
 Here are some example request bodies that fail:
+
 !!! danger "Please replace the BASE_URL value with your invoke URL from the deployed stage."
 
 * Test case #1: missing fields
 
-```bash hl_lines="1"
-export BASE_URL=https://8ymfcyzexk.execute-api.us-east-2.amazonaws.com/prod
-```
+    ```bash hl_lines="1"
+    export BASE_URL=https://8ymfcyzexk.execute-api.us-east-2.amazonaws.com/prod
+    ```
 
-```bash
-curl -X POST $BASE_URL/feedback \
--H "Content-Type: application/json" \
---data @- <<REQUEST_BODY
-	{  
-	   "name":"test user",
-	   "imageUrl":"https://en.wikipedia.org/wiki/Cherry#/media/File:Cherry_Stella444.jpg"
-	}
-REQUEST_BODY
-```
+    ```bash
+    curl -X POST $BASE_URL/feedback \
+    -H "Content-Type: application/json" \
+    --data @- <<REQUEST_BODY
+      {  
+        "name":"test user",
+        "imageUrl":"https://en.wikipedia.org/wiki/Cherry#/media/File:Cherry_Stella444.jpg"
+      }
+    REQUEST_BODY
+    ```
 
 * Test case #2: the `imageUrl` is not a valid URL
 
-```bash
-curl -X POST $BASE_URL/feedback \
--H "Content-Type: application/json" \
---data @- <<REQUEST_BODY
-	{  
-	   "name":"test user",
-	   "imageUrl":"htt://en.wikipedia.org/wiki/Cherry#/media/File:Cherry_Stella444.jpg",
-	   "comment": "It is a test" ,
-	   "star": 4
-	}
-REQUEST_BODY
-```
+    ```bash
+    curl -X POST $BASE_URL/feedback \
+    -H "Content-Type: application/json" \
+    --data @- <<REQUEST_BODY
+      {  
+        "name":"test user",
+        "imageUrl":"htt://en.wikipedia.org/wiki/Cherry#/media/File:Cherry_Stella444.jpg",
+        "comment": "It is a test" ,
+        "star": 4
+      }
+    REQUEST_BODY
+    ```
 
-* Test case #3: the `star ` parameter is not a number
+* Test case #3: the `star` parameter is not a number
 
-```bash
-curl -X POST $BASE_URL/feedback \
--H "Content-Type: application/json" \
---data @- <<REQUEST_BODY
-	{  
-	   "name":"test user",
-	   "imageUrl":"https://en.wikipedia.org/wiki/Unicorn#/media/File:Oftheunicorn.jpg",
-	   "comment": "It is a test" ,
-	   "star": "4a"
-	}
-REQUEST_BODY
-```
+    ```bash
+    curl -X POST $BASE_URL/feedback \
+    -H "Content-Type: application/json" \
+    --data @- <<REQUEST_BODY
+      {  
+        "name":"test user",
+        "imageUrl":"https://en.wikipedia.org/wiki/Unicorn#/media/File:Oftheunicorn.jpg",
+        "comment": "It is a test" ,
+        "star": "4a"
+      }
+    REQUEST_BODY
+    ```
 
 
-You should get a 400 Bad Request response: 
+For all of the above, you should get a 400 Bad Request response: 
 
-```javascript
-{"message": "Invalid request body"}
-```
+  ```javascript
+  {"message": "Invalid request body"}
+  ```
 
 
 ### Correct parameters
 
-Testing the **POST /feedback** API with right parameters:
+Test the **POST /feedback** API with correct parameters:
 
 ```bash
 curl -X POST $BASE_URL/feedback \
@@ -191,13 +192,13 @@ You can run the following command to verify if the POST call is successful.
 ```bash
 curl -s $NLB_DNS/feedback |jq
 ```
-You should be able to see the last record is returned from the API.
+You should be able to see that the last record is now returned from the API.
 
 ## Additional input validation options
 
-As you have now seen, API Gateway input validation gives you basic features such as type checks and regex matching. In a production application, this is often not enough and you may have additional constraints on the API input. 
+As you have now seen, API Gateway input validation gives you basic features such as type checking and regex matching. In a production application, this is often not enough and you may have additional constraints on the input to your API. 
 
-To gain further protection, you should consider using the below in addition to the input validation features from API Gateway:
+To further protect your API, you should consider the below in addition to the input validation features discussed here:
 
-* Add an AWS WAF ACL to your API Gateway - check out [**Module 5**](../waf/)
-* Add further input validation logic in your application code itself
+* Add an AWS WAF ACL to your API Gateway - check out [**Module 5**](../waf/).
+* Add further input validation logic to your application code.

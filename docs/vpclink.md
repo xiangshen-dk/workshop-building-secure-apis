@@ -140,3 +140,5 @@ http://reinforce-lab-nlb-XXXXXXXXXXXX.elb.us-east-2.amazonaws.com/feedback
 https://21kz57tm75.execute-api.us-east-1.amazonaws.com/prod/feedback.
 
 Note: Don't forget to append __feedback__ to your invoke URL or else you'll get an error.
+
+We now have a simple sample API that allows users to submit feedback comments and view others' comments.
