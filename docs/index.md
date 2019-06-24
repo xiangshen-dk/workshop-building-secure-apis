@@ -5,11 +5,12 @@ In this workshop, you get hands-on experience applying security best practices t
 
 ### Where can I read more about AWS cloud security?
 
-AWS Cloud Security - Protect your data with cloud-powered security [read more here](https://aws.amazon.com/security/).
+AWS Cloud Security - Protect your data with cloud-powered security: [read more here](https://aws.amazon.com/security/)
 
-### Where can I watch more about Amazon API Gateway best practices?
+### Where can I learn more about Amazon API Gateway best practices?
 
-Best Practices for Building Enterprise Grade APIs with Amazon API Gateway - [AWS Online Tech Talks](https://www.youtube.com/watch?v=9ElpSPXk-g8).
+- Best Practices for Building Enterprise Grade APIs with Amazon API Gateway: [AWS Online Tech Talks](https://www.youtube.com/watch?v=9ElpSPXk-g8)
+- Controlling and Managing Access to a REST API in API Gateway: [Amazon API Gateway Documentation](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-control-access-to-api.html)
 
 ### Presentation slides for the workshop at re:Inforce 2019
 [http://workshop.reinforce.awsdemo.me/Building_secure_APIs_in_the_cloud.pdf](http://workshop.reinforce.awsdemo.me/Building_secure_APIs_in_the_cloud.pdf)
