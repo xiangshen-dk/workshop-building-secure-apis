@@ -3,6 +3,8 @@ Time Estimate: 15 - 20 minutes
 
 In this module, we will configure Amazon Cognito to authorize access to our API. Amazon Cognito lets you create customizable authentication and authorization solutions for your REST APIs. You can use Amazon Cognito to control who can invoke REST API methods in addition to using the protections we set up previously. We will then test authenticating against Cognito and posting some new data to our API.
 
+Note that you don't have to use Cognito user pools as described below for authorization. You could also use [***IAM permissions***](https://docs.aws.amazon.com/apigateway/latest/developerguide/permissions.html) or a custom [***Lambda authorizer***](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html).
+
 ??? info "What is Amazon Cognito?"
     Amazon Cognito lets you easily add user sign-up and authentication to your mobile and web apps. Amazon Cognito also enables you to authenticate users through an external identity provider and provides temporary security credentials to access your app’s backend resources in AWS or any service behind Amazon API Gateway. Cognito will be our mechanism for enabling user authentication for access to our backend API. For more information, see https://aws.amazon.com/cognito/. 
 
