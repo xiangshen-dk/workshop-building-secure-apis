@@ -1,5 +1,5 @@
 # [Optional] Host the static site
-Time Estimate: 10 - 15 minutes  
+Time Estimate: 15 - 20 minutes  
 
 In this module, we will deploy the web UI of our application to Amazon S3 and front it with a CloudFront distribution to cache content and serve HTTPS requests. Note that this module is optional, but will show you how to take our sample frontend UI and deploy it to Amazon S3 for public consumption. 
 
@@ -16,13 +16,15 @@ Choose a unique name for your bucket and run the following command in the Cloud9
 
 ```bash
 export BUCKET_NAME={bucket name}
+```
+```bash
 echo "export BUCKET_NAME=$BUCKET_NAME" >> ~/.bashrc
 aws s3 mb s3://$BUCKET_NAME
 ```
 For example:
 
 ```bash
-export BUCKET_NAME=reinvent2018-serverless-web-shenx
+export BUCKET_NAME=reinforce-workshop-web-shenx
 echo "export BUCKET_NAME=$BUCKET_NAME" >> ~/.bashrc
 aws s3 mb s3://$BUCKET_NAME
 ```
@@ -181,7 +183,7 @@ You can also go to the [**CloudFront**](https://console.aws.amazon.com/cloudfron
 
 Now to add the CloudFront callback URL to AWS Cognito using the __DomainName__ from the previous step:
 
-* Open the [Cognito User Pool Console](https://us-west-2.console.aws.amazon.com/cognito/users/?region=us-west-2 "AWS Cognito")
+* Open the [Cognito User Pool Console](https://console.aws.amazon.com/cognito/users/ "AWS Cognito")
 * Open the user pool you created in the previous step (Default name: _feedback-users_)
 * Go to __App client settings__ on the left panel
 * Append the CloudFront URL to the __Callback URL(s)__ field. Then save the changes.
@@ -195,4 +197,5 @@ Now to add the CloudFront callback URL to AWS Cognito using the __DomainName__ f
 
 ### Testing from CloudFront
 
+!!! note "Use the credentials you created in the previous step, e.g. __firstuser__/__AWS@dmin12345__"
 * Once your distribution status is **Deployed**, you can open the CloudFront URL (e.g. `https://d1659etpii3mp.cloudfront.net`) and test interacting with the application from there.

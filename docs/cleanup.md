@@ -6,7 +6,7 @@ To delete the resources you created during the workshop, follow the below steps.
 
 * Go to the [WAF Console](https://console.aws.amazon.com/waf/home)
 * In the navigation pane, choose **Web ACLs**.
-* Choose the `ProtectInput` web ACL you created in the WAF module.
+* Choose the `ProtectInput` web ACL you created in the WAF module (you may have to filter it to your specific region).
 * On the **Rules** tab in the right pane, choose **Edit web ACL**.
 * Remove all rules from the web ACL by choosing the **x** at the right of the row for each rule. This doesn't delete the rules from AWS WAF, it just removes the rules from this web ACL.
 * Click **Update**.
@@ -19,7 +19,7 @@ To delete the resources you created during the workshop, follow the below steps.
 
 ### Delete the Cognito user pool
 
-  * Go to the [Amazon Cognito console](https://us-west-2.console.aws.amazon.com/cognito/users/?region=us-west-2#/ "Amazon Cognito console").
+  * Go to the [Amazon Cognito console](https://console.aws.amazon.com/cognito/users/ "Amazon Cognito console").
   * Select the user pool you created for the workshop.
   * Select __Domain name__ on the left panel.
   * Click the button __Delete domain__.
@@ -31,20 +31,22 @@ To delete the resources you created during the workshop, follow the below steps.
   * Refresh your browser to make sure the user pool is deleted.
 
 ### Delete FeedbackSvc API
-  * Go to the [Amazon API Gateway console](https://us-east-2.console.aws.amazon.com/apigateway/home?region=us-east-2#/vpc-links).
+  * Go to the [Amazon API Gateway console](https://console.aws.amazon.com/apigateway/home "vpc-links").
   * Select the **FeedbackSvc** API created for the workshop and select **Actions** --> **Delete API**.
   * Enter the name of the API to confirm and click **Delete API**.
 
 ### Delete VPC Link & NLB
-  * Go to the [Amazon API Gateway console](https://us-east-2.console.aws.amazon.com/apigateway/home?region=us-east-2#/vpc-links) --> **VPC Links**.
+  * Go to the [Amazon API Gateway console](https://console.aws.amazon.com/apigateway/home "vpc-links") --> **VPC Links**.
   * Click on the small **x** icon in the upper right corner of the box for the VPC Link you created for the workshop. Click **Delete** to confirm.
-  * Go to the [Amazon EC2 console](https://us-east-2.console.aws.amazon.com/ec2/v2/home?region=us-east-2#LoadBalancers:sort=loadBalancerName) --> **Load Balancers**.
-  * Select the NLB you created for the workshop and select **Actions** --> **Delete**.
+  * Go to the [Amazon EC2 console](https://us-east-1.console.aws.amazon.com/ec2/v2/home?region=us-east-1#LoadBalancers:sort=loadBalancerName) --> **Load Balancers**.
+  * Select the NLB you created for the workshop, delete the listen first then select **Actions** --> **Delete**.
+  * Click **Yes, Delete**.
+  * Select the target group (reinforce-targets) and select **Actions** --> **Delete**.
   * Click **Yes, Delete**.
 
 ### Delete the CloudFront distribution (if you created one)
 
-  * Go to the [Amazon CloudFront console](https://console.aws.amazon.com/cloudfront/home?region=us-west-2 "Amazon CloudFront console").
+  * Go to the [Amazon CloudFront console](https://console.aws.amazon.com/cloudfront/home "Amazon CloudFront console").
   * Select the distribution you created for the workshop.
   * Click the button __Disable__ at the top.
   * Click the button __Yes, Disable__ and __Close__.
@@ -56,16 +58,16 @@ To delete the resources you created during the workshop, follow the below steps.
   * Click __Delete__, and click __Yes, Delete__ to confirm. Then click __Close__.
 
 ### Delete S3 Bucket (if you created one)
-  * Go to the [Amazon S3 console](https://s3.console.aws.amazon.com/s3/home?region=us-east-2) and tick the checkbox next to the bucket you created for the workshop.
+  * Go to the [Amazon S3 console](https://s3.console.aws.amazon.com/s3/home) and tick the checkbox next to the bucket you created for the workshop.
   * Click **Delete**, type the name of the bucket to confirm deletion, and click **Confirm**.
 
 ### Delete API Key & Usage Plan
-  * Go to the [Amazon API Gateway console](https://us-east-2.console.aws.amazon.com/apigateway/home?region=us-east-2) --> **API Keys**.
+  * Go to the [Amazon API Gateway console](https://console.aws.amazon.com/apigateway/home) --> **API Keys**.
   * Select the API key you created for the workshop and click **Delete API Key**. Confirm **Delete**.
   * Now go to **Usage Plans** and select the usage plan you created for the workshop. Click on **Actions** --> **Delete Usage Plan**. Confirm **Delete**.
 
 ### Delete PetStore API
-  * Go to the [Amazon API Gateway console](https://us-east-2.console.aws.amazon.com/apigateway/home?region=us-east-2).
+  * Go to the [Amazon API Gateway console](https://console.aws.amazon.com/apigateway/home).
   * Select the **PetStore** API you created in Module 2 and select **Actions** --> **Delete API**.
   * Enter the name of the API to confirm and click **Delete API**.
 
