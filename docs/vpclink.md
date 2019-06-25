@@ -76,7 +76,9 @@ __Important Note:__ For the rest of the modules, we will need the resources prov
     NLB_ARN=$(aws elbv2 create-load-balancer --name reinforce-lab-nlb --type network --scheme internal --subnets $SUBNETS |jq '.LoadBalancers[]|.LoadBalancerArn' -r)
     
     # Create the target group
-    TG_ARN=$(aws elbv2 create-target-group --name reinforce-targets --protocol TCP --port 80 --vpc-id $VPC_ID|jq '.TargetGroups[]|.TargetGroupArn' -r)
+    TG_ARN=$(aws elbv2 create-target-group --name reinforce-targets \
+     --health-check-interval-seconds 10 --healthy-threshold-count 2 --unhealthy-threshold-count 2 \
+     --protocol TCP --port 80 --vpc-id $VPC_ID|jq '.TargetGroups[]|.TargetGroupArn' -r)
     
     # Get the instance id
     INSTANCE_ID=$(aws ec2 describe-instances --filters 'Name=tag:Name,Values=lab-backend*' --output text --query 'Reservations[*].Instances[*].InstanceId')
