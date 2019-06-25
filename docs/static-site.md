@@ -1,11 +1,11 @@
-# Host the static files(Optional)
+# [Optional] Host the static site
 Time Estimate: 10 - 15 minutes  
 
-In this module, we will deploy the web UI of our application to Amazon S3 and front it with a CloudFront distribution.
+In this module, we will deploy the web UI of our application to Amazon S3 and front it with a CloudFront distribution to cache content and serve HTTPS requests. Note that this module is optional, but will show you how to take our sample frontend UI and deploy it to Amazon S3 for public consumption. 
 
 ### Create S3 bucket to host the static files
 
-??? info "What is Amazon S3"
+??? info "What is Amazon S3?"
     Amazon S3 is object storage built to store and retrieve any amount of data from anywhere on the Internet. It’s a simple storage service that offers durable, highly available, and infinitely scalable data storage infrastructure at very low costs. Amazon S3 can also be configured to host static websites, serving HTML, JavaScript, images, and other files with no server management. For more information, see https://aws.amazon.com/s3/. 
 
 In Cloud9, open a new terminal by clicking the \+ sign next to the current one and select __New Terminal__. For example:
@@ -31,7 +31,7 @@ Make a note of the bucket name. We will need it later.
 
 ### Rebuild code
 
-Now, since we have updated the code, we need to rebuild the deployment package.
+Now, let's rebuild our code to be sure we have the most up to date deployment package.
 
 ```bash
   cd ~/environment/feedback-ui
@@ -40,14 +40,14 @@ Now, since we have updated the code, we need to rebuild the deployment package.
 
 ### Copy the web pages to the bucket
 
-To copy the code from Cloud9 to our newly created S3 bucket, run:
+Now, to copy the code from Cloud9 to our newly created S3 bucket, run:
 
 ```bash
 cd ~/environment/feedback-ui/dist && \
   aws s3 sync --acl public-read . s3://$BUCKET_NAME/
 ```
 
-!!! info "The files need to be public readable for the users. You can configure a [bucket policy](https://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteAccessPermissionsReqd.html "S3 bucket polic for public web site") for that. Here we use the '--acl public-read' option for individual files. Therefore, we avoid making the entire bucket public readable."
+!!! info "The files need to be public readable for the users. You could configure a [bucket policy](https://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteAccessPermissionsReqd.html "S3 bucket polic for public web site") for that. Here we use the '--acl public-read' option for individual files. Therefore, we avoid making the entire bucket public readable."
 
 ### Create a static web site using the S3 bucket
 To configure our S3 bucket to act as a static website, run the following:
@@ -58,10 +58,10 @@ aws s3 website s3://$BUCKET_NAME/ \
 
 ### Create a CloudFront distribution
 
-??? info "Amazon CloudFront"
+??? info "What is Amazon CloudFront?"
     Amazon CloudFront is a content delivery network (CDN) service that gives businesses and web application developers an easy and cost effective way to distribute content to end users with low latency and high data transfer speeds. Here, it will also enable HTTPS for our frontend hosted in Amazon S3. For more information, see https://aws.amazon.com/cloudfront/. 
 
-Create a file __cloudfront-config.json__ with the following content (==remember to replace the __{bucket name}__ with the name you just chose==):
+Create a file __cloudfront-config.json__ with the following content, ==being sure to replace __{bucket name}__ with the name you just chose==:
 
 ```javascript hl_lines="11 12 22"
 {
@@ -175,7 +175,7 @@ Notice the __Status__ and __DomainName__. Please make a note of the __DomainName
 
 You can also go to the [**CloudFront**](https://console.aws.amazon.com/cloudfront/home?# "AWS CloudFront") console to view the deployment status of your distribution and find the **DomainName**, which has the format __{random-string}.cloudfront.net__ as showing in the response above.
 
-!!! danger "It takes about 14 ~ 15 minutes to create the CloudFront distribution. While you are waiting, you can work on the step below and move on to the next module. We will come back to the distribution in the next module."
+!!! danger "It takes about 14 ~ 15 minutes to create the CloudFront distribution. While you are waiting, you can work on the step below."
 
 ### Add the CloudFront callback URL to Cognito
 
@@ -192,3 +192,7 @@ Now to add the CloudFront callback URL to AWS Cognito using the __DomainName__ f
     `https://02b97ba28ee44121bc0e2ed09a4e6e99.vfs.cloud9.us-west-2.amazonaws.com/callback`,**`https://d1659etpii3mp.cloudfront.net/callback`**
 
  * Save the changes
+
+### Testing from CloudFront
+
+* Once your distribution status is **Deployed**, you can open the CloudFront URL (e.g. `https://d1659etpii3mp.cloudfront.net`) and test interacting with the application from there.
