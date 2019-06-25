@@ -1,7 +1,7 @@
 # Create the web UI
 Time Estimate: 20 - 25 minutes  
 
-In this module, we will download the source code for the frontend web UI of our application, hook it into our API, and test using it from our development environment.
+In this module, we will download some sample source code for a Vue.js frontend web UI that will use our REST API as its backend. We'll hook this frontend up with our `FeedbackSvc` API and then test it from our Cloud9 development environment. In doing so, you'll see how a real application might interact with our API.
 
 ### Download the code 
 
@@ -32,11 +32,11 @@ To run the app locally within Cloud9, run:
 npm run serve
 ```
 
-Make sure you don't have compile errors.
+Make sure you don't have any compile errors.
 
 ### Preview the application
 
-Select **Preview** > **Preview Running Application**. You will get an error. To fix that, copy the URL from your preview window, e.g. `xxxxxxx.vfs.cloud9.us-west-2.amazonaws.com`. Use that to update the URL in the file __vue.config.js__ under the project root directory.
+Select **Preview** > **Preview Running Application**. You will get an error. To fix that, copy the URL from your preview window (without https:// or /), e.g. `xxxxxxx.vfs.cloud9.us-west-2.amazonaws.com`. Use that to update the URL in the file __vue.config.js__ under the project root directory.
 
 ![Cloud9 preview](../screenshots/screen9.png)
 
@@ -46,26 +46,26 @@ Refresh the preview window, you should have a web page displayed. If you still h
 
 ### Configure Cognito for authentication
 
-Go back to your [**Cognito**](https://console.aws.amazon.com/cognito/home "AWS Cognito") user pool and in __App client settings__, do the following:
+Now, we need to do some additional configuration in Cognito so that users can sign-in via Cognito from our new frontend. Go back to your [**Cognito**](https://console.aws.amazon.com/cognito/home "AWS Cognito") user pool and in __App client settings__, do the following:
 
 * Enable __Cognito User Pool__ for webapp (mark the checkbox under **Enabled Identity Providers**)
-* Add Cloud9 preview URL with ==__/callback__== to the callback URL. For example:
+* Enter the entire Cloud9 preview URL with ==__/callback__== appended as the callback URL. For example:
 
     `https://02b97ba28ee44121bc0e2ed09a4e6e99.vfs.cloud9.us-west-2.amazonaws.com/callback`
 
-* Enable Implict grant with __openid__ and __profile__ in __Allowed OAuth scopes__
+* Enable **Implict grant** with __openid__ and __profile__ in __Allowed OAuth scopes__
 * Confirm your selections look like the below and save changes  
 
   ![App client settings](../screenshots/clientsettings.png)
 
-Now, select __Domain name__ on the left panel, type in a name in the field _your domain name_. You can use any valid name as long as it's unique. (for example: _feedback-users-shenx_). Save changes.
+Now, select __Domain name__ on the left panel, type in a name in the `Your domain name` field. You can use any valid name as long as it's unique. (for example: _feedback-users-shenx_). Click **Save changes**.
 
 
-Make a note for the domain name, for example: `https://feedback-users-shenx.auth.us-west-2.amazoncognito.com`
+Make a note of this domain name, for example: `https://feedback-users-shenx.auth.us-west-2.amazoncognito.com`
 
 ### Update UI configuration
 
-Go back to your Cloud9 editor and open the **env.js** file under the **src** directory. Update it with the __domain URL__, __client ID__, __API GW endpoint__, and __API Key__. For example:
+Now, we need to update our frontend to use your unique resources. Go back to your Cloud9 editor and open the **env.js** file under the **src** directory. Update it with your unique __domain URL__, __client ID__, __API GW endpoint__, and __API Key__. For example:
 ```javascript
 export default {
   'AWS_COGNITO_USER_POOL_DOMAIN': 'feedback-users-shenx.auth.us-west-2.amazoncognito.com',
@@ -79,6 +79,8 @@ Refresh your preview window and you should see the web page.
 
 ### Configure API gateway for [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing "CORS")
 
+Now, to successfuly integrate our app with API Gateway, we need to enable cross-origin resource sharing (CORS) for our API. CORS is a browser security feature that restricts cross-origin HTTP requests that are initiated from scripts running in the browser. 
+
 Go to [**API Gateway**](https://us-west-2.console.aws.amazon.com/apigateway/home?region=us-west-2 "API GW"), select the API we created, and do the following:
 
 * Select the resource __/feedback__ and open the __Actions__ dropdown.
@@ -87,7 +89,7 @@ Go to [**API Gateway**](https://us-west-2.console.aws.amazon.com/apigateway/home
 
 * Select __Enable CORS__ and click the button __Enable CORS and replace existing CORS headers__.
 
-    - Ignore the errors if there is any. We will fix them in later steps.
+    - Ignore any errors that pop up. We will fix them in later steps.
 
 * A new method __OPTIONS__ has been created. Select it, then click __Method Response__.
 
@@ -115,12 +117,13 @@ Go to [**API Gateway**](https://us-west-2.console.aws.amazon.com/apigateway/home
 
   ![API Gateway - header](../screenshots/api-gw-5.png)
 
-* Click the __Actions__ button again. Select __Deploy API__; select the __Prod__ stage and click __Deploy__.
+* Click the __Actions__ button again. Select __Deploy API__, choose the __Prod__ stage and click __Deploy__.
 
 ### Test from Cloud9
 
-Back in your Cloud9 preview window, login to the app and post some feedback. If all is configured properly, it should now work.
-!!! note "Use the credential you created in the previous step, e.g. __firstuser__/__AWS@dmin12345__"
+Back in your Cloud9 preview window, try signing into the app and posting some new feedback. If all is configured properly, it should now work.
+
+!!! note "Use the credentials you created in the previous step, e.g. __firstuser__/__AWS@dmin12345__"
 !!! Warning
     If you get an error when you try to sign in from the Cloud9 preview window, you may have to pop out the preview into a new window on your browser by clicking on the button highlighted below:
     ![Preview sign in error](../screenshots/previewpopout.png)

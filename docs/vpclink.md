@@ -119,7 +119,7 @@ __Note__: It may take a mintue or two to provision the VPC link.
 
 2. From the __Actions__ drop-down list, select __Create Resource__ and create a resource with the name ___feedback___.
 
-3. Select the new ___feedback___ resource and from __Actions__ choose __Create Method__. Select __GET__ from the dropdown directly underneath the resource and click the small checkmark to confirm. Enter parameters for the method as shown in the below screenshot. For __Endpoint URL__, be sure to enter the DNS name of your NLB starting with ___http://___ and ending with ___/feedback___, for example:
+3. Select the new ___feedback___ resource and from __Actions__ choose __Create Method__. Select __GET__ from the dropdown directly underneath the resource and click the small checkmark to confirm. Enter parameters for the method as shown in the below screenshot, ==except do **not** tick the checkbox for *Use Proxy Integration*==. For __Endpoint URL__, be sure to enter the DNS name of your NLB starting with ___http://___ and ending with ___/feedback___, for example:
 http://reinforce-lab-nlb-XXXXXXXXXXXX.elb.us-east-2.amazonaws.com/feedback
 
     You can run the following command from your Cloud9 terminal to get this endpoint:
