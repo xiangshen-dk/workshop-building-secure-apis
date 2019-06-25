@@ -15,7 +15,7 @@ In your Cloud9 terminal, download the source code for our frontend web UI by run
 
 ### Build the code
 
-Now upgrade Node.js and build the code with the following commands:
+Now build the front-end code with the following commands:
 
 ```bash
 cd feedback-ui
@@ -36,7 +36,7 @@ Make sure you don't have any compile errors.
 
 ### Preview the application
 
-Select **Preview** > **Preview Running Application**. You will get an error. To fix that, copy the URL from your preview window (without https:// or /), e.g. `xxxxxxx.vfs.cloud9.us-west-2.amazonaws.com`. Use that to update the URL in the file __vue.config.js__ under the project root directory.
+Select **Preview** > **Preview Running Application**. You will get an error. To fix that, copy the URL from your preview window (without https:// or /), e.g. `xxxxxxx.vfs.cloud9.us-east-1.amazonaws.com`. Use that to update the URL in the file __vue.config.js__ under the __feedback-ui__ directory.
 
 ![Cloud9 preview](../screenshots/screen9.png)
 
@@ -51,7 +51,7 @@ Now, we need to do some additional configuration in Cognito so that users can si
 * Enable __Cognito User Pool__ for webapp (mark the checkbox under **Enabled Identity Providers**)
 * Enter the entire Cloud9 preview URL with ==__/callback__== appended as the callback URL. For example:
 
-    `https://02b97ba28ee44121bc0e2ed09a4e6e99.vfs.cloud9.us-west-2.amazonaws.com/callback`
+    `https://02b97ba28ee44121bc0e2ed09a4e6e99.vfs.cloud9.us-east-1.amazonaws.com/callback`
 
 * Enable **Implict grant** with __openid__ and __profile__ in __Allowed OAuth scopes__
 * Confirm your selections look like the below and save changes  
@@ -61,16 +61,16 @@ Now, we need to do some additional configuration in Cognito so that users can si
 Now, select __Domain name__ on the left panel, type in a name in the `Your domain name` field. You can use any valid name as long as it's unique. (for example: _feedback-users-shenx_). Click **Save changes**.
 
 
-Make a note of this domain name, for example: `https://feedback-users-shenx.auth.us-west-2.amazoncognito.com`
+Make a note of this domain name, for example: `https://feedback-users-shenx.auth.us-east-1.amazoncognito.com`
 
 ### Update UI configuration
 
 Now, we need to update our frontend to use your unique resources. Go back to your Cloud9 editor and open the **env.js** file under the **src** directory. Update it with your unique __domain URL__, __client ID__, __API GW endpoint__, and __API Key__. For example:
 ```javascript
 export default {
-  'AWS_COGNITO_USER_POOL_DOMAIN': 'feedback-users-shenx.auth.us-west-2.amazoncognito.com',
+  'AWS_COGNITO_USER_POOL_DOMAIN': 'feedback-users-shenx.auth.us-east-1.amazoncognito.com',
   'AWS_COGNITO_CLIENT_ID': '4ea782m3eaupr6jrv84m031qo2',
-  'API_BASE_URL': 'https://tzr1eokf4k.execute-api.us-west-2.amazonaws.com/Prod',
+  'API_BASE_URL': 'https://tzr1eokf4k.execute-api.us-east-1.amazonaws.com/prod',
   'API_KEY': 'your-api-key-here'
 }
 ```
@@ -81,15 +81,13 @@ Refresh your preview window and you should see the web page.
 
 Now, to successfuly integrate our app with API Gateway, we need to enable cross-origin resource sharing (CORS) for our API. CORS is a browser security feature that restricts cross-origin HTTP requests that are initiated from scripts running in the browser. 
 
-Go to [**API Gateway**](https://us-west-2.console.aws.amazon.com/apigateway/home?region=us-west-2 "API GW"), select the API we created, and do the following:
+Go to [**API Gateway**](https://console.aws.amazon.com/apigateway/home "API GW"), select the API we created, and do the following:
 
 * Select the resource __/feedback__ and open the __Actions__ dropdown.
 
   ![API Gateway - actions](../screenshots/api-gw-0.png)
 
 * Select __Enable CORS__ and click the button __Enable CORS and replace existing CORS headers__.
-
-    - Ignore any errors that pop up. We will fix them in later steps.
 
 * A new method __OPTIONS__ has been created. Select it, then click __Method Response__.
 
@@ -117,7 +115,9 @@ Go to [**API Gateway**](https://us-west-2.console.aws.amazon.com/apigateway/home
 
   ![API Gateway - header](../screenshots/api-gw-5.png)
 
-* Click the __Actions__ button again. Select __Deploy API__, choose the __Prod__ stage and click __Deploy__.
+* Click the __Actions__ button again. Select __Deploy API__, choose the __prod__ stage and click __Deploy__.
+
+* Stop and start the app again.
 
 ### Test from Cloud9
 

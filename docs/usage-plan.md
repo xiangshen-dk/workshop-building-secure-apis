@@ -53,7 +53,7 @@ Now, we need to modify our API gateway so requests must have an API key present.
 2. Set **API Key Required** field to `true` and click the checkmark to confirm.
   ![](../images/5B-confirm-usage-plan-requirement.png)
 
-3. Deploy the API again to the __prod__ stage.
+3. Deploy the API again to the __prod__ stage (Click __Deploy API__ under the __Actions__ button).
 
 ## Test request with API keys
 

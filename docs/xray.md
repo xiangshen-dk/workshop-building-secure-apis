@@ -53,11 +53,9 @@ We'll need to enable X-Ray in API Gateway so that requests will with tracked as 
 
 	![enable xray in api gateway](images/8E-enable-apig.png)
 	
-1. Once saved, redeploy the API by clicking on the **Resources** tab on the left hand side --> **Actions**  --> **Deploy API**  -> Pick the `prod` stage --> **deploy**. 
-
 1. Test by making a few API requests with curl or your browser, for example:
 ```bash
-curl -s $BASE_URL/feedback | jq
+curl -s -H"x-api-key: $API_KEY" $API_ENDPOINT | jq
 ```
 
 1. Go to the [**X-Ray console**](https://console.aws.amazon.com/xray/home), go to the **Service map** tab and refresh.

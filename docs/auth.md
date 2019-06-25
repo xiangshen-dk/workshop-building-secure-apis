@@ -129,7 +129,7 @@ Make a note of the new password. You will need it to login to the application.
     --data @- <<REQUEST_BODY
         {  
         "name":"auth-user-test",
-        "comment": "It is a test for authentication.",
+        "comment": "It is a test for authorization.",
         "imageUrl":"https://en.wikipedia.org/wiki/Unicorn#/media/File:Oftheunicorn.jpg",
         "star": 4
         }

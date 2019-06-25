@@ -145,9 +145,8 @@ You have now added a WAF to your API gateway stage!
 1. First, send some valid requests using curl to make sure well-behaving requests are getting through. For example:
 
 	```bash hl_lines="1"
-	# Important: replace the endpoint with yours
-	export API_ENDPOINT=\
-	https://d8hr9nesd2.execute-api.us-east-2.amazonaws.com/prod/feedback
+	# Important: if you haven't set BASE_URL, please set it to the deployed invoke URL
+	export API_ENDPOINT=${BASE_URL}/feedback
 	```
 
 	```bash

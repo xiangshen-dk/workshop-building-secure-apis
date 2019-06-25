@@ -6,7 +6,7 @@ nav:
   - Module 4 - Input validation: input-validation.md
   - Module 5 - WAF: waf.md
   - Module 6 - Usage plan: usage-plan.md
-  - Module 7 - Authentication: auth.md
+  - Module 7 - Authorization: auth.md
   - Module 8 - Configure the web UI: webui.md
   - Module 9 - X-Ray: xray.md
   - Module 10 - Host the static files: static-site.md
