@@ -61,7 +61,7 @@ aws s3 website s3://$BUCKET_NAME/ \
 ??? info "What is Amazon CloudFront?"
     Amazon CloudFront is a content delivery network (CDN) service that gives businesses and web application developers an easy and cost effective way to distribute content to end users with low latency and high data transfer speeds. Here, it will also enable HTTPS for our frontend hosted in Amazon S3. For more information, see https://aws.amazon.com/cloudfront/. 
 
-Create a file __cloudfront-config.json__ with the following content, ==being sure to replace __{bucket name}__ with the name you just chose==:
+Create a file __cloudfront-config.json__ with the following content, ==being sure to replace __{bucket name}__ and __{region}__ with your choices==:
 
 ```javascript hl_lines="11 12 22"
 {
@@ -75,7 +75,7 @@ Create a file __cloudfront-config.json__ with the following content, ==being sur
     "Items": [
       {
         "Id": "{bucket name}",
-        "DomainName": "{bucket name}.s3-website-us-west-2.amazonaws.com",
+        "DomainName": "{bucket name}.s3-website.{region}.amazonaws.com",
         "CustomOriginConfig": {
           "HTTPPort": 80,
           "HTTPSPort": 443,
