@@ -37,7 +37,7 @@ Note that you don't have to use Cognito user pools as described below for author
 3. On the left hand side, open **Users and groups** and select **Create user**. Do the following:
     - Enter a **Username** and **Temporary password**, for example ```firstuser``` and ```1234ABcd!```. Make a note of these values for later.
     - Deselect the checkboxes for **Send an invitation to this new user?** and **Mark phone number as verified?**
-    - Enter an **Email**.
+    - Enter an **Email** (For this lab, it could be a fake email such as abc@example.com).
     - Click on **Create user**.
 
 ### Authenticate user
