@@ -133,7 +133,7 @@ aws waf-regional delete-rate-based-rule --rule-id $RequestFloodRule --change-tok
 ### Delete the Cognito user pool
 #### CLI steps (assuming you follow the exact lab steps in the previous modules):
 ```bash
-UserPoolId=$(aws cognito-idp list-user-pools --max-results 10|jq -r '.UserPools[]|select(.Name="test")|.Id')
+UserPoolId=$(aws cognito-idp list-user-pools --max-results 10|jq -r '.UserPools[]|select(.Name=="feedback-users")|.Id')
 
 # Try to get the domain we created in the user pool previously
 CP_DOMAIN=$(grep AWS_COGNITO_USER_POOL_DOMAIN ~/environment/feedback-ui/src/env.js | cut -f1 -d.| cut -f4 -d"'")
@@ -216,7 +216,7 @@ Change the name __test company__ to your API key name if it's a different one.
 
 ```bash hl_lines="1"
 
-ApiKeyId=$(aws apigateway get-api-keys|jq -r '.items[]|select(.name="test company")|.id')
+ApiKeyId=$(aws apigateway get-api-keys|jq -r '.items[]|select(.name=="test company")|.id')
 
 UsagePlanId=$(aws apigateway get-usage-plans --key-id $ApiKeyId|jq -r '.items[]|.id')
 
