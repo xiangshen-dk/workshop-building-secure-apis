@@ -223,7 +223,7 @@ aws waf-regional delete-rate-based-rule --rule-id $RequestFloodRule --change-tok
 * On the **Rules** tab in the right pane, choose **Edit web ACL**.
 * Remove all rules from the web ACL by choosing the **x** at the right of the row for each rule. This doesn't delete the rules from AWS WAF, it just removes the rules from this web ACL.
 * Click **Update**.
-* Dissasociate the API gateway from the WAF by going to the section **AWS resources using this web ACL** in the **Rules** tab and clicking the  **x** at the right of the API gateway stage
+* Dissasociate the API gateway from the WAF by going to the section **AWS resources using this web ACL** in the **Rules** tab and clicking the  **x** at the right of the API gateway stage (This step is not needed if the API has realdy been deleted).
 * On the **Web ACLs** page, confirm that the web ACL that you want to delete is selected, and then choose **Delete**.
 * In the navigation pane, choose **Rules**. 
 * Go to each of the 3 rules we created (you may have to filter it to your specific region) and edit the rule to disassociate all of the conditions for each rule.
