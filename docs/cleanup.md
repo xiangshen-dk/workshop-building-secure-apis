@@ -15,121 +15,6 @@ aws apigateway delete-rest-api --rest-api-id $PetStoreAPI
   * Select the **PetStore** API you created in Module 2 and select **Actions** --> **Delete API**.
   * Enter the name of the API to confirm and click **Delete API**.
 
-### Delete AWS WAF resources
-
-#### CLI steps (assuming you follow the exact lab steps in the previous modules):
-```bash
-
-WebACLId=$(aws waf-regional list-web-acls | jq -r '.WebACLs[] | select(.Name=="ProtectInput") | .WebACLId')
-
-# Cleanup SQL injection rule
-SQLinjectionRule=$(aws waf-regional list-rules|jq -r '.Rules[]|select(.Name=="SQLinjectionRule")|.RuleId')
-
-SqlInjectionMatchSetId=$(aws waf-regional list-sql-injection-match-sets| \
-  jq -r '.SqlInjectionMatchSets[]|select(.Name=="SQLinjectionMatch")|.SqlInjectionMatchSetId')
-
-CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
-aws waf-regional update-sql-injection-match-set \
---sql-injection-match-set-id $SqlInjectionMatchSetId \
---change-token $CHANGE_TOKEN \
---updates 'Action="DELETE",SqlInjectionMatchTuple={FieldToMatch={Type="QUERY_STRING"},TextTransformation="URL_DECODE"}'
-
-CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
-aws waf-regional update-sql-injection-match-set \
---sql-injection-match-set-id $SqlInjectionMatchSetId \
---change-token $CHANGE_TOKEN \
---updates 'Action="DELETE",SqlInjectionMatchTuple={FieldToMatch={Type="BODY"},TextTransformation="URL_DECODE"}'
-
-CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
-aws waf-regional update-sql-injection-match-set \
---sql-injection-match-set-id $SqlInjectionMatchSetId \
---change-token $CHANGE_TOKEN \
---updates 'Action="DELETE",SqlInjectionMatchTuple={FieldToMatch={Type="BODY"},TextTransformation="NONE"}'
-
-CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
-aws waf-regional update-sql-injection-match-set \
---sql-injection-match-set-id $SqlInjectionMatchSetId \
---change-token $CHANGE_TOKEN \
---updates 'Action="DELETE",SqlInjectionMatchTuple={FieldToMatch={Type="URI"},TextTransformation="URL_DECODE"}'
-
-CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
-aws waf-regional update-rule \
-    --rule-id $SQLinjectionRule \
-    --change-token $CHANGE_TOKEN \
-    --updates "Action='DELETE',Predicate={Negated=false,Type='SqlInjectionMatch',DataId='$SqlInjectionMatchSetId'}"
-
-CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
-aws waf-regional delete-sql-injection-match-set \
---sql-injection-match-set-id $SqlInjectionMatchSetId \
---change-token $CHANGE_TOKEN
-
-# Cleanup large size body rule
-LargeBodyMatchRule=$(aws waf-regional list-rules|jq -r '.Rules[]|select(.Name=="LargeBodyMatchRule")|.RuleId')
-
-SizeConstraintSetId=$(aws waf-regional list-size-constraint-sets| \
-  jq -r '.SizeConstraintSets[]|select(.Name=="LargeBodyMatch")|.SizeConstraintSetId')
-
-CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
-aws waf-regional update-rule \
-    --rule-id $LargeBodyMatchRule \
-    --change-token $CHANGE_TOKEN \
-    --updates "Action='DELETE',Predicate={Negated=false,Type='SizeConstraint',DataId='$SizeConstraintSetId'}"
-
-CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
-aws waf-regional update-size-constraint-set \
---size-constraint-set-id $SizeConstraintSetId \
---change-token $CHANGE_TOKEN \
---updates 'Action="DELETE",SizeConstraint={FieldToMatch={Type="BODY"},TextTransformation="NONE",ComparisonOperator="GE",Size=3000}'
-
-CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
-aws waf-regional delete-size-constraint-set \
---size-constraint-set-id $SizeConstraintSetId \
---change-token $CHANGE_TOKEN
-
-# Get rate limiting rule id
-RequestFloodRule=$(aws waf-regional list-rate-based-rules|jq -r '.Rules[]|select(.Name=="RequestFloodRule")|.RuleId')
-
-# Delete rules in web acl
-CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
-aws waf-regional update-web-acl --web-acl-id $WebACLId --change-token $CHANGE_TOKEN  \
-  --updates "Action='DELETE',ActivatedRule={Priority=1,RuleId='${LargeBodyMatchRule}',Action={Type='BLOCK'},Type='REGULAR'}"
-
-CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
-aws waf-regional update-web-acl --web-acl-id $WebACLId --change-token $CHANGE_TOKEN  \
-  --updates "Action='DELETE',ActivatedRule={Priority=2,RuleId='${SQLinjectionRule}',Action={Type='BLOCK'},Type='REGULAR'}"
-
-CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
-aws waf-regional update-web-acl --web-acl-id $WebACLId --change-token $CHANGE_TOKEN  \
-  --updates "Action='DELETE',ActivatedRule={Priority=3,RuleId='${RequestFloodRule}',Action={Type='BLOCK'},Type='RATE_BASED'}"
-
-# Delete the web acl
-CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
-aws waf-regional delete-web-acl --web-acl-id $WebACLId --change-token $CHANGE_TOKEN
-
-# Delete the rules
-CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
-aws waf-regional delete-rule --rule-id $SQLinjectionRule --change-token $CHANGE_TOKEN
-CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
-aws waf-regional delete-rule --rule-id $LargeBodyMatchRule --change-token $CHANGE_TOKEN
-CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
-aws waf-regional delete-rate-based-rule --rule-id $RequestFloodRule --change-token $CHANGE_TOKEN
-```
-
-#### Alternatively, you can use the following steps from the web console:
-
-* Go to the [WAF Console](https://console.aws.amazon.com/waf/home)
-* In the navigation pane, choose **Web ACLs**.
-* Choose the `ProtectInput` web ACL you created in the WAF module (you may have to filter it to your specific region).
-* On the **Rules** tab in the right pane, choose **Edit web ACL**.
-* Remove all rules from the web ACL by choosing the **x** at the right of the row for each rule. This doesn't delete the rules from AWS WAF, it just removes the rules from this web ACL.
-* Click **Update**.
-* Dissasociate the API gateway from the WAF by going to the section **AWS resources using this web ACL** in the **Rules** tab and clicking the  **x** at the right of the API gateway stage
-* On the **Web ACLs** page, confirm that the web ACL that you want to delete is selected, and then choose **Delete**.
-* In the navigation pane, choose **Rules**. 
-* Go to each of the 3 rules we created (you may have to filter it to your specific region) and edit the rule to disassociate all of the conditions for each rule.
-* Delete the rules.
-* Under **Conditions**, select **Size constraints**, delete our condition's filters, and delete the condition. Repeat this for **SQL injection**.
-
 ### Delete the Cognito user pool
 #### CLI steps (assuming you follow the exact lab steps in the previous modules):
 ```bash
@@ -229,6 +114,121 @@ aws apigateway delete-api-key --api-key $ApiKeyId
   * Go to the [Amazon API Gateway console](https://console.aws.amazon.com/apigateway/home) --> **API Keys**.
   * Select the API key you created for the workshop and click **Delete API Key**. Confirm **Delete**.
   * Now go to **Usage Plans** and select the usage plan you created for the workshop. Click on **Actions** --> **Delete Usage Plan**. Confirm **Delete**.
+
+### Delete AWS WAF resources
+
+#### CLI steps (assuming you follow the exact lab steps in the previous modules):
+```bash
+
+WebACLId=$(aws waf-regional list-web-acls | jq -r '.WebACLs[] | select(.Name=="ProtectInput") | .WebACLId')
+
+# Cleanup SQL injection rule
+SQLinjectionRule=$(aws waf-regional list-rules|jq -r '.Rules[]|select(.Name=="SQLinjectionRule")|.RuleId')
+
+SqlInjectionMatchSetId=$(aws waf-regional list-sql-injection-match-sets| \
+  jq -r '.SqlInjectionMatchSets[]|select(.Name=="SQLinjectionMatch")|.SqlInjectionMatchSetId')
+
+CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
+aws waf-regional update-sql-injection-match-set \
+--sql-injection-match-set-id $SqlInjectionMatchSetId \
+--change-token $CHANGE_TOKEN \
+--updates 'Action="DELETE",SqlInjectionMatchTuple={FieldToMatch={Type="QUERY_STRING"},TextTransformation="URL_DECODE"}'
+
+CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
+aws waf-regional update-sql-injection-match-set \
+--sql-injection-match-set-id $SqlInjectionMatchSetId \
+--change-token $CHANGE_TOKEN \
+--updates 'Action="DELETE",SqlInjectionMatchTuple={FieldToMatch={Type="BODY"},TextTransformation="URL_DECODE"}'
+
+CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
+aws waf-regional update-sql-injection-match-set \
+--sql-injection-match-set-id $SqlInjectionMatchSetId \
+--change-token $CHANGE_TOKEN \
+--updates 'Action="DELETE",SqlInjectionMatchTuple={FieldToMatch={Type="BODY"},TextTransformation="NONE"}'
+
+CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
+aws waf-regional update-sql-injection-match-set \
+--sql-injection-match-set-id $SqlInjectionMatchSetId \
+--change-token $CHANGE_TOKEN \
+--updates 'Action="DELETE",SqlInjectionMatchTuple={FieldToMatch={Type="URI"},TextTransformation="URL_DECODE"}'
+
+CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
+aws waf-regional update-rule \
+    --rule-id $SQLinjectionRule \
+    --change-token $CHANGE_TOKEN \
+    --updates "Action='DELETE',Predicate={Negated=false,Type='SqlInjectionMatch',DataId='$SqlInjectionMatchSetId'}"
+
+CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
+aws waf-regional delete-sql-injection-match-set \
+--sql-injection-match-set-id $SqlInjectionMatchSetId \
+--change-token $CHANGE_TOKEN
+
+# Cleanup large size body rule
+LargeBodyMatchRule=$(aws waf-regional list-rules|jq -r '.Rules[]|select(.Name=="LargeBodyMatchRule")|.RuleId')
+
+SizeConstraintSetId=$(aws waf-regional list-size-constraint-sets| \
+  jq -r '.SizeConstraintSets[]|select(.Name=="LargeBodyMatch")|.SizeConstraintSetId')
+
+CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
+aws waf-regional update-rule \
+    --rule-id $LargeBodyMatchRule \
+    --change-token $CHANGE_TOKEN \
+    --updates "Action='DELETE',Predicate={Negated=false,Type='SizeConstraint',DataId='$SizeConstraintSetId'}"
+
+CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
+aws waf-regional update-size-constraint-set \
+--size-constraint-set-id $SizeConstraintSetId \
+--change-token $CHANGE_TOKEN \
+--updates 'Action="DELETE",SizeConstraint={FieldToMatch={Type="BODY"},TextTransformation="NONE",ComparisonOperator="GT",Size=3000}'
+
+CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
+aws waf-regional delete-size-constraint-set \
+--size-constraint-set-id $SizeConstraintSetId \
+--change-token $CHANGE_TOKEN
+
+# Get rate limiting rule id
+RequestFloodRule=$(aws waf-regional list-rate-based-rules|jq -r '.Rules[]|select(.Name=="RequestFloodRule")|.RuleId')
+
+# Delete rules in web acl
+CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
+aws waf-regional update-web-acl --web-acl-id $WebACLId --change-token $CHANGE_TOKEN  \
+  --updates "Action='DELETE',ActivatedRule={Priority=1,RuleId='${LargeBodyMatchRule}',Action={Type='BLOCK'},Type='REGULAR'}"
+
+CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
+aws waf-regional update-web-acl --web-acl-id $WebACLId --change-token $CHANGE_TOKEN  \
+  --updates "Action='DELETE',ActivatedRule={Priority=2,RuleId='${SQLinjectionRule}',Action={Type='BLOCK'},Type='REGULAR'}"
+
+CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
+aws waf-regional update-web-acl --web-acl-id $WebACLId --change-token $CHANGE_TOKEN  \
+  --updates "Action='DELETE',ActivatedRule={Priority=3,RuleId='${RequestFloodRule}',Action={Type='BLOCK'},Type='RATE_BASED'}"
+
+# Delete the web acl
+CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
+aws waf-regional delete-web-acl --web-acl-id $WebACLId --change-token $CHANGE_TOKEN
+
+# Delete the rules
+CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
+aws waf-regional delete-rule --rule-id $SQLinjectionRule --change-token $CHANGE_TOKEN
+CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
+aws waf-regional delete-rule --rule-id $LargeBodyMatchRule --change-token $CHANGE_TOKEN
+CHANGE_TOKEN=$(aws waf-regional get-change-token | jq -r '.ChangeToken')
+aws waf-regional delete-rate-based-rule --rule-id $RequestFloodRule --change-token $CHANGE_TOKEN
+```
+
+#### Alternatively, you can use the following steps from the web console:
+
+* Go to the [WAF Console](https://console.aws.amazon.com/waf/home)
+* In the navigation pane, choose **Web ACLs**.
+* Choose the `ProtectInput` web ACL you created in the WAF module (you may have to filter it to your specific region).
+* On the **Rules** tab in the right pane, choose **Edit web ACL**.
+* Remove all rules from the web ACL by choosing the **x** at the right of the row for each rule. This doesn't delete the rules from AWS WAF, it just removes the rules from this web ACL.
+* Click **Update**.
+* Dissasociate the API gateway from the WAF by going to the section **AWS resources using this web ACL** in the **Rules** tab and clicking the  **x** at the right of the API gateway stage
+* On the **Web ACLs** page, confirm that the web ACL that you want to delete is selected, and then choose **Delete**.
+* In the navigation pane, choose **Rules**. 
+* Go to each of the 3 rules we created (you may have to filter it to your specific region) and edit the rule to disassociate all of the conditions for each rule.
+* Delete the rules.
+* Under **Conditions**, select **Size constraints**, delete our condition's filters, and delete the condition. Repeat this for **SQL injection**.
 
 ### Delete CloudFormation stack
 
